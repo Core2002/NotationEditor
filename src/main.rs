@@ -1,47 +1,44 @@
+mod grid;
+mod input;
+mod note;
+mod score;
+
 use bevy::prelude::*;
+use grid::GridBounds;
+use score::Score;
 
-#[derive(Component)]
-
-struct Person;
-
-#[derive(Component)]
-
-struct Name(String);
-
-fn hello_world() {
-    println!("hello world!");
-}
-
-fn add_people(mut commands: Commands) {
-    commands.spawn((Person, Name("Elaina Proctor".to_string())));
-    commands.spawn((Person, Name("Renzo Hume".to_string())));
-    commands.spawn((Person, Name("Zayna Nieves".to_string())));
-}
-
-#[derive(Resource)]
-struct GreetTimer(Timer);
-
-fn greet_people(time: Res<Time>, mut timer: ResMut<GreetTimer>, query: Query<&Name, With<Person>>) {
-    if timer.0.tick(time.delta()).just_finished() {
-        for name in &query {
-            println!("hello {}!", name.0);
-        }
-    }
-}
-
-pub struct HelloPlugin;
-
-impl Plugin for HelloPlugin {
-    fn build(&self, app: &mut App) {
-        app.insert_resource(GreetTimer(Timer::from_seconds(2.0, TimerMode::Repeating)))
-            .add_systems(Startup, (hello_world, add_people))
-            .add_systems(Update, greet_people);
-    }
-}
+const TRACK_COUNT: usize = 6;
+const NOTE_SIZE: f32 = 20.0;
+const SCROLL_SPEED: f32 = 20.0;
 
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins)
-        .add_plugins(HelloPlugin)
+        .add_plugins(DefaultPlugins.set(WindowPlugin {
+            primary_window: Some(Window {
+                title: "Notation Editor".into(),
+                resolution: (800.0, 600.0).into(),
+                ..default()
+            }),
+            ..default()
+        }))
+        .insert_resource(Score::new())
+        .insert_resource(GridBounds::new(0.0, 800.0, 0.0, 600.0))
+        .add_systems(Startup, setup)
+        .add_systems(
+            Update,
+            (
+                input::handle,
+                note::render_notes,
+                grid::render_grid
+            ),
+        )
         .run();
+}
+
+fn setup(mut commands: Commands) {
+    commands.spawn((
+        Camera2d::default(),
+        Transform::from_xyz(400.0, 300.0, 0.0),
+        GlobalTransform::default(),
+    ));
 }
