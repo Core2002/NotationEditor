@@ -8,7 +8,7 @@ use grid::GridBounds;
 use score::Score;
 
 const TRACK_COUNT: usize = 6;
-const NOTE_SIZE: f32 = 20.0;
+const NOTE_SIZE: f32 = 40.0;
 const SCROLL_SPEED: f32 = 20.0;
 
 fn main() {
@@ -26,11 +26,7 @@ fn main() {
         .add_systems(Startup, setup)
         .add_systems(
             Update,
-            (
-                input::handle,
-                note::render_notes,
-                grid::render_grid
-            ),
+            (input::handle, note::render_notes, grid::render_grid),
         )
         .run();
 }

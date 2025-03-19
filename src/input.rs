@@ -54,7 +54,7 @@ fn handle_mouse_click(
 
             if mouse_button_input.just_pressed(MouseButton::Right) {
                 remove_note(score, world_pos);
-            } 
+            }
             if mouse_button_input.just_pressed(MouseButton::Left) {
                 add_note(score, world_pos);
             }
@@ -75,7 +75,7 @@ fn remove_note(score: &mut ResMut<Score>, world_pos: Vec2) {
 fn calculate_track_and_time(world_pos: Vec2) -> (usize, f32) {
     let track =
         ((world_pos.x / (800.0 / TRACK_COUNT as f32)).floor() as usize).clamp(0, TRACK_COUNT - 1);
-    let time = world_pos.y / NOTE_SIZE *20.0;
+    let time = world_pos.y;
 
     // 加入调试信息
     println!(
