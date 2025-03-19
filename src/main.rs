@@ -11,6 +11,8 @@ const TRACK_COUNT: usize = 6;
 const NOTE_SIZE: f32 = 40.0;
 const SCROLL_SPEED: f32 = 20.0;
 
+const TRACK_WIDTH: f32 = NOTE_SIZE * 2.0; // 每个轨道的宽度
+
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins.set(WindowPlugin {
@@ -22,7 +24,12 @@ fn main() {
             ..default()
         }))
         .insert_resource(Score::new())
-        .insert_resource(GridBounds::new(0.0, 800.0, 0.0, 600.0))
+        .insert_resource(GridBounds::new(
+            0.0,
+            TRACK_WIDTH * TRACK_COUNT as f32,
+            0.0,
+            TRACK_WIDTH * TRACK_COUNT as f32,
+        ))
         .add_systems(Startup, setup)
         .add_systems(
             Update,
@@ -34,7 +41,7 @@ fn main() {
 fn setup(mut commands: Commands) {
     commands.spawn((
         Camera2d::default(),
-        Transform::from_xyz(400.0, 300.0, 0.0),
+        Transform::from_xyz(TRACK_WIDTH * TRACK_COUNT as f32 / 2.0, 0.0, 0.0),
         GlobalTransform::default(),
     ));
 }

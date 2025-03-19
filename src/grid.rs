@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::TRACK_COUNT;
+use crate::{NOTE_SIZE, TRACK_COUNT};
 
 #[derive(Resource)]
 pub struct GridBounds {
@@ -23,25 +23,49 @@ impl GridBounds {
 
 pub fn render_grid(grid_bounds: Res<GridBounds>, mut gizmos: Gizmos) {
     let horizontal_step = (grid_bounds.x_max - grid_bounds.x_min) / TRACK_COUNT as f32;
-    let vertical_step = (grid_bounds.y_max - grid_bounds.y_min) / 10.0;
+    let vertical_step = (grid_bounds.y_max - grid_bounds.y_min) / TRACK_COUNT as f32;
+    let grid_color = Color::rgba(0.5, 0.5, 0.5, 0.8); // 网格线颜色
 
-    // 水平网格线
-    for i in 0..=TRACK_COUNT {
-        let x = grid_bounds.x_min + i as f32 * horizontal_step;
-        gizmos.line(
-            Vec3::new(x, grid_bounds.y_min, 0.0),
-            Vec3::new(x, grid_bounds.y_max, 0.0),
-            Color::rgba(0.5, 0.5, 0.5, 0.8), // 调整颜色和透明度
-        );
-    }
+    // 绘制网格线
+    draw_grid_lines(
+        &grid_bounds,
+        &mut gizmos,
+        TRACK_COUNT,
+        horizontal_step,
+        true, // 水平线
+        grid_color,
+    );
+    draw_grid_lines(
+        &grid_bounds,
+        &mut gizmos,
+        10,
+        vertical_step,
+        false, // 垂直线
+        grid_color,
+    );
+}
 
-    // 垂直网格线
-    for i in 0..=10 {
-        let y = grid_bounds.y_min + i as f32 * vertical_step;
-        gizmos.line(
-            Vec3::new(grid_bounds.x_min, y, 0.0),
-            Vec3::new(grid_bounds.x_max, y, 0.0),
-            Color::rgba(0.5, 0.5, 0.5, 0.8), // 调整颜色和透明度
-        );
+fn draw_grid_lines(
+    grid_bounds: &GridBounds,
+    gizmos: &mut Gizmos,
+    line_count: usize,
+    step: f32,
+    is_horizontal: bool,
+    color: Color,
+) {
+    for i in 0..=line_count {
+        let pos = grid_bounds.y_min + i as f32 * step;
+        let (start, end) = if is_horizontal {
+            (
+                Vec3::new(grid_bounds.x_min + i as f32 * step, grid_bounds.y_min, 0.0),
+                Vec3::new(grid_bounds.x_min + i as f32 * step, grid_bounds.y_max, 0.0),
+            )
+        } else {
+            (
+                Vec3::new(grid_bounds.x_min, pos, 0.0),
+                Vec3::new(grid_bounds.x_max, pos, 0.0),
+            )
+        };
+        gizmos.line(start, end, color);
     }
 }

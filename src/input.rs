@@ -13,7 +13,7 @@ use bevy::{
     window::Window,
 };
 
-use crate::{NOTE_SIZE, SCROLL_SPEED, TRACK_COUNT, score::Score};
+use crate::{NOTE_SIZE, SCROLL_SPEED, TRACK_COUNT, TRACK_WIDTH, note::Note, score::Score};
 
 pub fn handle(
     mut score: ResMut<Score>,
@@ -64,17 +64,16 @@ fn handle_mouse_click(
 
 fn add_note(score: &mut ResMut<Score>, world_pos: Vec2) {
     let (track, time) = calculate_track_and_time(world_pos);
-    score.add_note(track, time);
+    score.add_note(Note { track, time });
 }
 
 fn remove_note(score: &mut ResMut<Score>, world_pos: Vec2) {
     let (track, time) = calculate_track_and_time(world_pos);
-    score.remove_note(track, time);
+    score.remove_note(Note { track, time });
 }
 
 fn calculate_track_and_time(world_pos: Vec2) -> (usize, f32) {
-    let track =
-        ((world_pos.x / (800.0 / TRACK_COUNT as f32)).floor() as usize).clamp(0, TRACK_COUNT - 1);
+    let track = ((world_pos.x / TRACK_WIDTH).floor() as usize).clamp(0, TRACK_COUNT - 1);
     let time = world_pos.y;
 
     // 加入调试信息
