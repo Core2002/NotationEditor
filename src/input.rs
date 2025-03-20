@@ -13,7 +13,7 @@ use bevy::{
     window::Window,
 };
 
-use crate::{NOTE_SIZE, SCROLL_SPEED, TRACK_COUNT, TRACK_WIDTH, note::Note, score::Score};
+use crate::{SCROLL_SPEED, TRACK_COUNT, TRACK_WIDTH, note::Note, score::Score};
 
 pub fn handle(
     mut score: ResMut<Score>,

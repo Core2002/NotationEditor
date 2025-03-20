@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::{NOTE_SIZE, TRACK_COUNT};
+use crate::TRACK_COUNT;
 
 #[derive(Resource)]
 pub struct GridBounds {
