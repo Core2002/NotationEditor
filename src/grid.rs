@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::TRACK_COUNT;
+use crate::{BPM, TRACK_COUNT, TRACK_WIDTH};
 
 #[derive(Resource)]
 pub struct GridBounds {
@@ -11,7 +11,11 @@ pub struct GridBounds {
 }
 
 impl GridBounds {
-    pub fn new(x_min: f32, x_max: f32, y_min: f32, y_max: f32) -> Self {
+    pub fn from_track_count_and_time(track_count: usize, time_min: f32) -> Self {
+        let x_min = 0.0;
+        let x_max = TRACK_WIDTH * track_count as f32;
+        let y_min = 0.0;
+        let y_max = TRACK_WIDTH * BPM as f32 * time_min as f32;
         GridBounds {
             x_min,
             x_max,
@@ -23,7 +27,7 @@ impl GridBounds {
 
 pub fn render_grid(grid_bounds: Res<GridBounds>, mut gizmos: Gizmos) {
     let horizontal_step = (grid_bounds.x_max - grid_bounds.x_min) / TRACK_COUNT as f32;
-    let vertical_step = (grid_bounds.y_max - grid_bounds.y_min) / TRACK_COUNT as f32;
+    let vertical_step = (grid_bounds.y_max - grid_bounds.y_min) / (BPM as f32 * 3.0);
     let grid_color = Color::rgba(0.5, 0.5, 0.5, 0.8); // 网格线颜色
 
     // 绘制网格线
@@ -38,7 +42,7 @@ pub fn render_grid(grid_bounds: Res<GridBounds>, mut gizmos: Gizmos) {
     draw_grid_lines(
         &grid_bounds,
         &mut gizmos,
-        10,
+        BPM * 3,
         vertical_step,
         false, // 垂直线
         grid_color,

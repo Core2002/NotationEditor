@@ -11,6 +11,8 @@ const TRACK_COUNT: usize = 6;
 const NOTE_SIZE: f32 = 40.0;
 const SCROLL_SPEED: f32 = 20.0;
 
+const BPM: usize = 120;
+
 const TRACK_WIDTH: f32 = NOTE_SIZE * 2.0; // 每个轨道的宽度
 
 fn main() {
@@ -24,12 +26,7 @@ fn main() {
             ..default()
         }))
         .insert_resource(Score::new())
-        .insert_resource(GridBounds::new(
-            0.0,
-            TRACK_WIDTH * TRACK_COUNT as f32,
-            0.0,
-            TRACK_WIDTH * TRACK_COUNT as f32,
-        ))
+        .insert_resource(GridBounds::from_track_count_and_time(TRACK_COUNT, 3.0))
         .add_systems(Startup, setup)
         .add_systems(
             Update,
