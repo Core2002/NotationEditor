@@ -16,9 +16,9 @@ pub struct GridBounds {
 impl GridBounds {
     pub fn from_track_count_and_time(track_count: usize, bpm: usize, time_min: f32) -> Self {
         let x_min = 0.0;
-        let x_max = TRACK_WIDTH * track_count as f32;
+        let x_max = (TRACK_WIDTH * track_count) as f32;
         let y_min = 0.0;
-        let y_max = TRACK_WIDTH * bpm as f32 * time_min as f32;
+        let y_max = (TRACK_WIDTH * bpm) as f32 * time_min;
         GridBounds {
             x_min,
             x_max,
@@ -33,7 +33,8 @@ impl GridBounds {
 
 pub fn render_grid(grid_bounds: Res<GridBounds>, mut gizmos: Gizmos) {
     let horizontal_step = (grid_bounds.x_max - grid_bounds.x_min) / grid_bounds.track_count as f32;
-    let vertical_step = (grid_bounds.y_max - grid_bounds.y_min) / (grid_bounds.bpm as f32 * grid_bounds.time_min);
+    let vertical_step =
+        (grid_bounds.y_max - grid_bounds.y_min) / (grid_bounds.bpm as f32 * grid_bounds.time_min);
     let grid_color = Color::rgba(0.5, 0.5, 0.5, 0.8); // 网格线颜色
 
     // 绘制网格线

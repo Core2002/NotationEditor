@@ -63,24 +63,24 @@ fn handle_mouse_click(
 }
 
 fn add_note(score: &mut ResMut<Score>, world_pos: Vec2) {
-    let (track, time) = calculate_track_and_time(world_pos);
-    score.add_note(Note { track, time });
+    let (track, beat) = calculate_track_and_bate(world_pos);
+    score.add_note(Note { track, beat });
 }
 
 fn remove_note(score: &mut ResMut<Score>, world_pos: Vec2) {
-    let (track, time) = calculate_track_and_time(world_pos);
-    score.remove_note(Note { track, time });
+    let (track, beat) = calculate_track_and_bate(world_pos);
+    score.remove_note(Note { track, beat });
 }
 
-fn calculate_track_and_time(world_pos: Vec2) -> (usize, f32) {
-    let track = ((world_pos.x / TRACK_WIDTH).floor() as usize).clamp(0, TRACK_COUNT - 1);
-    let time = world_pos.y;
+fn calculate_track_and_bate(world_pos: Vec2) -> (usize, usize) {
+    let track = ((world_pos.x / TRACK_WIDTH as f32).floor() as usize).clamp(0, TRACK_COUNT - 1);
+    let beat = (world_pos.y / TRACK_WIDTH as f32) as usize;
 
     // 加入调试信息
     println!(
-        "World Position: ({}, {}), Track: {}, Time: {}",
-        world_pos.x, world_pos.y, track, time
+        "World Position: ({}, {}), Track: {}, Bate: {}",
+        world_pos.x, world_pos.y, track, beat
     );
 
-    (track, time)
+    (track, beat)
 }
