@@ -50,7 +50,7 @@ fn handle_mouse_click(
 ) {
     if let Some(mouse_pos) = window.cursor_position() {
         if let Ok(ray) = camera.viewport_to_world(global_transform, mouse_pos) {
-            let world_pos = Vec2::new(ray.origin.x, ray.origin.y);
+            let world_pos = Vec2::new(ray.origin.x, ray.origin.y + TRACK_WIDTH as f32 / 2.0);
 
             if mouse_button_input.just_pressed(MouseButton::Right) {
                 remove_note(score, world_pos);
