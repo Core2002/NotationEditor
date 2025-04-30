@@ -17,14 +17,7 @@ const TRACK_WIDTH: usize = NOTE_SIZE * 2; // 每个轨道的宽度
 
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins.set(WindowPlugin {
-            primary_window: Some(Window {
-                title: "Notation Editor".into(),
-                resolution: (800.0, 600.0).into(),
-                ..default()
-            }),
-            ..default()
-        }))
+        .add_plugins(DefaultPlugins)
         .insert_resource(Score::new())
         .insert_resource(GridBounds::from_track_count_and_time(TRACK_COUNT, BPM, 1.0))
         .add_systems(Startup, setup)
