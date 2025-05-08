@@ -7,6 +7,7 @@ use bevy::{
         ButtonInput,
         mouse::{MouseButton, MouseWheel},
     },
+    log::info,
     math::Vec2,
     render::camera::Camera,
     transform::components::{GlobalTransform, Transform},
@@ -22,8 +23,9 @@ pub fn handle(
     mut camera_query: Query<(&Camera, &mut Transform, &GlobalTransform)>,
     windows: Query<&Window>,
 ) {
-    let (camera, mut camera_transform, global_transform) = camera_query.single_mut();
-    let window = windows.single();
+    let (camera, mut camera_transform, global_transform) = camera_query.single_mut().unwrap();
+
+    let window = windows.single().unwrap();
 
     handle_scroll(&mut camera_transform, &mut scroll_evr);
     handle_mouse_click(
@@ -77,7 +79,7 @@ fn calculate_track_and_bate(world_pos: Vec2) -> (usize, usize) {
     let beat = (world_pos.y / TRACK_WIDTH as f32) as usize;
 
     // 加入调试信息
-    println!(
+    info!(
         "World Position: ({}, {}), Track: {}, Bate: {}",
         world_pos.x, world_pos.y, track, beat
     );

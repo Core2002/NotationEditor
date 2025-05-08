@@ -35,7 +35,7 @@ pub fn render_grid(grid_bounds: Res<GridBounds>, mut gizmos: Gizmos) {
     let horizontal_step = (grid_bounds.x_max - grid_bounds.x_min) / grid_bounds.track_count as f32;
     let vertical_step =
         (grid_bounds.y_max - grid_bounds.y_min) / (grid_bounds.bpm as f32 * grid_bounds.time_min);
-    let grid_color = Color::rgba(0.5, 0.5, 0.5, 0.8); // 网格线颜色
+    let grid_color = Color::srgb(0.5, 0.5, 0.5); // 网格线颜色
 
     // 绘制网格线
     draw_grid_lines(

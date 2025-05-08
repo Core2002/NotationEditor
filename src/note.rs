@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::{grid::GridBounds, score::Score, NOTE_SIZE, TRACK_COUNT, TRACK_WIDTH};
+use crate::{NOTE_SIZE, TRACK_COUNT, TRACK_WIDTH, grid::GridBounds, score::Score};
 
 #[derive(Component, Clone)]
 pub struct Note {
