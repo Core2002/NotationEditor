@@ -6,10 +6,10 @@ mod score;
 mod time_domain_graph;
 
 use bevy::prelude::*;
+use bevy_fps_counter::FpsCounterPlugin;
 use grid::GridBounds;
 use score::Score;
 use time_domain_graph::{TimeDomainGraph, decode_mp3};
-
 const TRACK_COUNT: usize = 6;
 const NOTE_SIZE: usize = 40;
 const SCROLL_SPEED: f32 = 80.0;
@@ -20,7 +20,7 @@ const TRACK_WIDTH: usize = NOTE_SIZE * 2; // 每个轨道的宽度
 
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins)
+        .add_plugins((DefaultPlugins, FpsCounterPlugin))
         .insert_resource(Score::new())
         .insert_resource(GridBounds::from_track_count_and_time(TRACK_COUNT, BPM, 1.0))
         .add_systems(Startup, setup)

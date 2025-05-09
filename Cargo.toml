@@ -5,4 +5,5 @@ edition = "2024"
 
 [dependencies]
 bevy = "0.16"
+bevy-fps-counter = "0.7.0"
 symphonia = "0.5.4"

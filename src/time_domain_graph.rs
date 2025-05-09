@@ -3,6 +3,8 @@ use symphonia::core::audio::{AudioBufferRef, Signal};
 use symphonia::core::io::MediaSourceStream;
 use symphonia::core::probe::Hint;
 
+use crate::{TRACK_COUNT, TRACK_WIDTH};
+
 pub fn decode_mp3(file_path: &str) -> Vec<i16> {
     let mut samples = Vec::new();
     let file = std::fs::File::open(file_path).expect("Failed to open file");
@@ -54,19 +56,19 @@ pub fn render_graph(mut gizmos: Gizmos, time_domain: Query<&TimeDomainGraph>) {
             .collect();
 
         let tick_interval = 1.0; // Time interval in seconds
-        let sample_rate = 44100; // Sample rate of the audio (adjust as needed)
+        let sample_rate = 44100 / 4; // Sample rate of the audio (adjust as needed)
         let samples_per_tick = (tick_interval * sample_rate as f32) as usize;
 
         // Graph parameters
         let width = sample_rate as f32; // Width of the graph in world units
-        let height = 400.0; // Height of the graph in world units
+        let height = (TRACK_COUNT * TRACK_WIDTH) as f32; // Height of the graph in world units
         let center = Vec2::ZERO; // Center position of the graph
 
         // Calculate the x step between samples
         let x_step = width / (sample_count as f32);
 
         // Draw the graph
-        for i in (0..sample_count - 1).step_by(8) {
+        for i in (0..sample_count - 1).step_by(32) {
             let x1 = center.x - width / 2.0 + i as f32 * x_step;
             let y1 = center.y + normalized_samples[i] * height / 2.0;
 
@@ -76,7 +78,7 @@ pub fn render_graph(mut gizmos: Gizmos, time_domain: Query<&TimeDomainGraph>) {
             gizmos.line_2d(
                 Vec2::new(y1, x1),
                 Vec2::new(y2, x2),
-                Color::srgba(0., 255., 0., 0.4),
+                Color::srgba(0., 255., 0., 0.6),
             );
         }
 
