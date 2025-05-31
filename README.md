@@ -58,3 +58,42 @@ A simple music notation editor built using the Bevy game engine in Rust. This pr
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+We welcome contributions! If you'd like to contribute to this project, please follow these guidelines:
+
+- Fork the repository and create a new branch for your feature or bug fix.
+- Make sure your changes are well-documented and tested.
+- Submit a pull request with a clear description of your changes.
+- Ensure that all tests pass before submitting your PR.
+
+### Code Style
+
+- Follow Rust's standard coding conventions where possible.
+- Keep functions small and focused on one task.
+- Use descriptive variable and function names.
+- Write comments to explain complex logic or design decisions.
+
+## Testing
+
+To run tests, use the following command:
+
+```bash
+cargo test
+```
+
+If you're adding new functionality, please include appropriate unit and integration tests.
+
+## Releases
+
+For information about releases, see the [Releases](https://github.com/Core2002/NotationEditor/releases) page.
+
+## Reporting Issues
+
+If you encounter any bugs or issues, or have suggestions for improvements, please open an issue on GitHub. When reporting an issue, please provide:
+
+- A clear and concise description of the problem.
+- Steps to reproduce the issue.
+- Expected behavior vs actual behavior.
+- Any relevant logs or screenshots.
