@@ -23,9 +23,13 @@ pub fn handle(
     mut camera_query: Query<(&Camera, &mut Transform, &GlobalTransform)>,
     windows: Query<&Window>,
 ) {
-    let (camera, mut camera_transform, global_transform) = camera_query.single_mut().unwrap();
+    let Ok((camera, mut camera_transform, global_transform)) = camera_query.single_mut() else {
+        return;
+    };
 
-    let window = windows.single().unwrap();
+    let Ok(window) = windows.single() else {
+        return;
+    };
 
     handle_scroll(&mut camera_transform, &mut scroll_evr);
     handle_mouse_click(
@@ -38,9 +42,11 @@ pub fn handle(
 }
 
 fn handle_scroll(camera_transform: &mut Transform, scroll_evr: &mut EventReader<MouseWheel>) {
+    let mut total_scroll = 0.0;
     for ev in scroll_evr.read() {
-        camera_transform.translation.y += ev.y * SCROLL_SPEED;
+        total_scroll += ev.y * SCROLL_SPEED;
     }
+    camera_transform.translation.y += total_scroll;
 }
 
 fn handle_mouse_click(
@@ -65,16 +71,16 @@ fn handle_mouse_click(
 }
 
 fn add_note(score: &mut ResMut<Score>, world_pos: Vec2) {
-    let (track, beat) = calculate_track_and_bate(world_pos);
+    let (track, beat) = calculate_track_and_beat(world_pos);
     score.add_note(Note { track, beat });
 }
 
 fn remove_note(score: &mut ResMut<Score>, world_pos: Vec2) {
-    let (track, beat) = calculate_track_and_bate(world_pos);
+    let (track, beat) = calculate_track_and_beat(world_pos);
     score.remove_note(Note { track, beat });
 }
 
-fn calculate_track_and_bate(world_pos: Vec2) -> (usize, usize) {
+fn calculate_track_and_beat(world_pos: Vec2) -> (usize, usize) {
     let track = ((world_pos.x / TRACK_WIDTH as f32).floor() as usize).clamp(0, TRACK_COUNT - 1);
     let beat = (world_pos.y / TRACK_WIDTH as f32) as usize;
 
