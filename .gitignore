@@ -1,2 +1,4 @@
 /target
 b.wav
+*.json.tmp
+.DS_Store
